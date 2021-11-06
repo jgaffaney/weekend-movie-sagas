@@ -1,14 +1,22 @@
+import { Button } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 function MovieDetails() {
 
     const { id } = useParams();
 
+    // declare hook functions
     const dispatch = useDispatch();
+    const history = useHistory();
 
+    // grab the movie with all it's details and an array of genres for the selected movie
     const movie = useSelector(store => store.selectedGenres)
+
+    const handleClick = () => {
+        history.push('/');
+    }
 
     useEffect(() => {
         dispatch({type: 'FETCH_SELECTED_GENRES', payload: id})
@@ -27,6 +35,7 @@ function MovieDetails() {
             <h3>{movie.description}</h3>
             </div>)
         }
+        <button onClick={handleClick} >BACK</button>
         </div>
     )
 }
