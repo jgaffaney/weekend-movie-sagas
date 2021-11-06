@@ -12,6 +12,11 @@ function AddMovie() {
         dispatch({type: 'FETCH_GENRES'})
     }, [])
 
+    const [title, setTitle] = useState('');
+    const [genre, setGenre] = useState('');
+    const [poster, setPoster] = useState('');
+    const [description, setDescription] = useState('');
+
     const dispatch = useDispatch();
 
     const genres = useSelector(store=>store.genres)
@@ -21,15 +26,15 @@ function AddMovie() {
         <h2>Add a New Movie</h2>
         <form>
             <label htmlFor='titleInput'>Movie Title</label>
-            <input id='titleInput'/>
+            <input onChange={(e)=>{setTitle(e.target.value)}}id='titleInput'/>
             <label htmlFor='posterInput'>Poster URL</label>
-            <input id='posterInput' />
+            <input onChange={(e)=> {setPoster(e.target.value)}}id='posterInput' />
             <label htmlFor='descriptionInput'>Description/Synopsis</label>
-            <textarea cols={40} rows={4} id='descriptionInput'></textarea>
-            <select name='Genre' id='genre'>
+            <textarea cols={40} rows={4} onChange={(e)=> {setDescription(e.target.value)}}id='descriptionInput'></textarea>
+            <select onChange={(e) => {setGenre(e.target.value)}} name='Genre' id='genre'>
                 <option value=''>Please select a Genre</option>
-                {genres.map((genre) => (
-                    <option value={`${genre.name}`}>{genre.name}</option>
+                {genres.map((genre, i) => (
+                    <option  key={i} value={`${genre.name}`}>{genre.name}</option>
                 ))}
             </select>
 
