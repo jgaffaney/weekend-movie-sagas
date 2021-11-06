@@ -17,9 +17,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  const values = req.params.id;
-  console.log('values ', values);
-  
+  const values = req.params.id;  
   
   const queryText = `
   SELECT "title",  "poster", "description", ARRAY_AGG("genres"."name") AS "genres" from "movies"
