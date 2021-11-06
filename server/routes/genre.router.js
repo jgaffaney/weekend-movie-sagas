@@ -3,17 +3,17 @@ const router = express.Router();
 const pool = require('../modules/pool')
 
 router.get('/', (req, res) => {
-  // Add query to get all genres
-  const queryText = `
-  SELECT * FROM genres;
-  `
-  pool.query(queryText)
-    .then(response => {
-      res.send(response.rows)
-    }).catch(err => {
-      console.log('Error on GET for genres: ', err);
+
+  const query = `SELECT * FROM genres ORDER BY "name" ASC`;
+  pool.query(query)
+    .then(result => {
+      res.send(result.rows);
     })
-  res.sendStatus(500)
+    .catch(err => {
+      console.log('ERROR: Get all genres', err);
+      res.sendStatus(500)
+    })
+
 });
 
 module.exports = router;
