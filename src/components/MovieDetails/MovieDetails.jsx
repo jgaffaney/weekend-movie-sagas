@@ -1,40 +1,41 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";
 
 function MovieDetails() {
 
-    // const dispatch = useDispatch();
-    const movies = useSelector(store => store.movies)
-
     const { id } = useParams();
-    console.log('id in MovieDetails is: ', id);
-    function selectedMovie() {
 
+    const dispatch = useDispatch();
+
+    const movies = useSelector(store => store.movies)
+    const selectedGenres = useSelector(store=>store.selectedGenres)
+    const details = selectedGenres.genres
+
+    useEffect(() => {
+        dispatch({type: 'FETCH_SELECTED_GENRES', payload: id})
+    },[])
+
+    console.log('details is: ', details);
+    // loop through all movies to find the selected movie
+    function selectedMovie() {
         for (let movie of movies) {
-            console.log('movie in movies: ', movie);
-            console.log('movie.id is: ', movie.id);
-            console.log('id is: ', id);
             if (movie.id == id) {
                 return movie;
             }
         }
     }
-
-    const movieToDisplay = selectedMovie();
-    // useEffect(() => {
-    //     selectedMovie();
-    // }, [])
+    const movie = selectedMovie();
 
     return (
         <div>
-            {/* <div>Details: {JSON.stringify(movieToDisplay)}</div> */}
-            <h2>{movieToDisplay.title}</h2>
-            <img src={movieToDisplay.poster} />
-            <h3>{movieToDisplay.description}</h3>
+            <h2>{movie.title}</h2>
+            <h3>Genres: </h3>
+            <p>{details.join(", ")}</p>
+            <img src={movie.poster} />
+            <h3>{movie.description}</h3>
         </div>
     )
-
 }
 
 export default MovieDetails;
