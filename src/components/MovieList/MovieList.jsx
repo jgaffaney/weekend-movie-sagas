@@ -14,6 +14,7 @@ function MovieList() {
     }, []);
 
     const handleClick = (movie) => {
+        dispatch({type: 'FETCH_SELECTED_GENRES', payload: movie.id})
         history.push(`/details/${movie.id}`)
     }
 

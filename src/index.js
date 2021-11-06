@@ -54,7 +54,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 // store to hold genres for selected movie
 const selectedGenres = (state = [], action) => {
-    console.log('action.payload in selectedGenres: ', action.payload);
+    // console.log('action.payload in selectedGenres: ', action.payload);
     
     switch (action.type) {
         case 'SET_SELECTED_GENRES':
