@@ -4,6 +4,7 @@
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import BackButton from '../BackButton/BackButton';
 
 // MUI components
@@ -17,7 +18,7 @@ import { FormControl, TextField } from '@mui/material';
 function MovieForm(props) {
 
     const dispatch = useDispatch();
-    // const history = useHistory();
+    const history = useHistory();
 
     useEffect(() => {
         dispatch({ type: 'FETCH_GENRES' })
@@ -62,8 +63,10 @@ function MovieForm(props) {
         console.log('new movieData: ', movieData);
         if (props.new) {
             dispatch({ type: 'POST_MOVIE', payload: movieData })
+            history.push('/')
         } else {
             dispatch({ type: 'UPDATE_MOVIE', payload: movieData })
+            history.push('/')
         }
     }
 
@@ -93,7 +96,7 @@ function MovieForm(props) {
             <div>
                 <List
                     component="nav"
-                    aria-label="Device settings"
+                    aria-label="Genre"
                     sx={{ bgcolor: 'background.paper' }}
                 >
                     <ListItem
@@ -101,7 +104,7 @@ function MovieForm(props) {
                         id="lock-button"
                         aria-haspopup="listbox"
                         aria-controls="lock-menu"
-                        aria-label="when device is locked"
+                        aria-label="Genre"
                         aria-expanded={open ? 'true' : undefined}
                         onClick={handleClickListItem}
                     >
@@ -124,7 +127,7 @@ function MovieForm(props) {
                     {options.map((option, index) => (
                         <MenuItem
                             key={option}
-                            disabled={index === 0}
+                            // disabled={index === 0}
                             selected={index === selectedIndex}
                             onClick={(event) => handleMenuItemClick(event, index)}
                         >
