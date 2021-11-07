@@ -27,7 +27,7 @@ function MovieForm(props) {
 
     const [movieData, setMovieData] = useState(props.movie)
     const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedIndex, setSelectedIndex] = useState(1);
+    const [selectedIndex, setSelectedIndex] = useState(0);
     const open = Boolean(anchorEl);
     const handleClickListItem = (event) => {
         setAnchorEl(event.currentTarget);
@@ -36,7 +36,7 @@ function MovieForm(props) {
     const handleMenuItemClick = (event, index) => {
         
         setSelectedIndex(index);
-        setMovieData({...movieData, genre_id: index + 1})
+        setMovieData({...movieData, genre_id: index})
         setAnchorEl(null);
     };
 
@@ -49,7 +49,7 @@ function MovieForm(props) {
     const genres = useSelector(store => store.genres)
 
     function optionMaker() {
-        const results = []
+        const results = ['']
         for (let genre of genres) {
             results.push(genre.name)
         }
@@ -138,7 +138,6 @@ function MovieForm(props) {
                     {options.map((option, index) => (
                         <MenuItem
                             key={option}
-                            // disabled={index === 0}
                             selected={index === selectedIndex}
                             onClick={(event) => handleMenuItemClick(event, index)}
                         >
