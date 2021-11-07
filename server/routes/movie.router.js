@@ -117,4 +117,31 @@ router.put('/', (req, res) => {
     })
 })
 
+router.delete('/:id', (req, res) => {
+  const queryText = `
+  DELETE FROM "movies_genres"
+  WHERE "movie_id" = $1;
+  `
+  const values = req.params.id;
+  pool.query(queryText, [values])
+    .then(response => {
+      console.log('movies_genres delete successful: ', res);
+      const newQuery = `
+      DELETE FROM "movies"
+      WHERE "id" = $1;
+      `
+      pool.query(newQuery, [values])
+        .then(resp=> {
+          console.log('Successful Delete from movies: ', resp);
+          res.sendStatus(204)
+        }).catch(err => {
+          console.log('Error on delete from movies: ', err);
+          res.sendStatus(500)
+        })
+    }).catch(err => {
+      console.log('Error on delete from movies_genres: ', err);
+      res.sendStatus(500)
+    })
+})
+
 module.exports = router;

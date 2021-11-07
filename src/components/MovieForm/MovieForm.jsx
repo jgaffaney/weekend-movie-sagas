@@ -2,56 +2,171 @@
 // pass in a movie if you want to edit it
 // pass in new = true if adding a new movie
 
-import {useDispatch, useSelector} from 'react-redux';
-import {useEffect, useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import BackButton from '../BackButton/BackButton';
+
+// MUI components
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import { FormControl, TextField, Button } from '@mui/material';
+import axios from 'axios';
 
 function MovieForm(props) {
 
     const dispatch = useDispatch();
-    // const history = useHistory();
+    const history = useHistory();
 
     useEffect(() => {
-        dispatch({type: 'FETCH_GENRES'})
+        dispatch({ type: 'FETCH_GENRES' })
     }, [])
 
     const [movieData, setMovieData] = useState(props.movie)
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const open = Boolean(anchorEl);
+    const handleClickListItem = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuItemClick = (event, index) => {
+        
+        setSelectedIndex(index);
+        setMovieData({...movieData, genre_id: index})
+        setAnchorEl(null);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDelete = () => {
+        axios.delete(`/api/movie/${props.movie.id}`)
+            .then(res => {
+                console.log('Successful Delete: ', res);
+                alert('Your movie was removed from the database')
+                history.push('/')
+            }).catch(err => {
+                console.log('Error on Delete');
+            })
+    }
 
     // grab genres for drop down list
-    const genres = useSelector(store=>store.genres)
+    const genres = useSelector(store => store.genres)
 
+    function optionMaker() {
+        const results = ['']
+        for (let genre of genres) {
+            results.push(genre.name)
+        }
+        return results
+    }
+
+    const options = optionMaker();
+    // console.log('options: ', options);
     // will dispatch a post is props.new = true, will dispatch and update if false
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('new movieData: ', movieData);
         if (props.new) {
-            dispatch({type: 'POST_MOVIE', payload: movieData})
+            axios.post('/api/movie', movieData)
+                .then(response => {
+                    dispatch({type: 'FETCH_MOVIES'})
+                    history.push('/')
+                }).catch(err => {
+                    log('Error on new movie POST: ', err)
+                })
         } else {
-            dispatch({type: 'UPDATE_MOVIE', payload: movieData})
+            axios.put('/api/movie', movieData )
+                .then(response => {
+                    dispatch({type: 'FETCH_MOVIES'})
+                    history.push('/')
+                }).catch(err => {
+                    console.log('Error on movie update: ', err);
+                })
         }
     }
 
-    return(
-        <form onSubmit={handleSubmit}>
-            <label htmlFor='titleInput'>Movie Title</label>
-            <input value={movieData.title}onChange={(e)=>{setMovieData({...movieData, title: e.target.value})}}id='titleInput'/>
-            <label htmlFor='posterInput'>Poster URL</label>
-            <input value={movieData.poster}onChange={(e)=> {setMovieData({...movieData, poster: e.target.value})}}id='posterInput' />
-            <label htmlFor='descriptionInput'>Description/Synopsis</label>
-            <textarea value={movieData.description}cols={40} rows={4} onChange={(e)=>{setMovieData({...movieData, description: e.target.value})}} id='descriptionInput'></textarea>
+    return (
+        <FormControl onSubmit={handleSubmit} sx={{width: '50%'}}>
+            <TextField
+                value={movieData.title}
+                onChange={(e) => { setMovieData({ ...movieData, title: e.target.value }) }}
+                id='titleInput'
+                label='Movie Title' />
+                <br />
+            <TextField
+                value={movieData.poster}
+                onChange={(e) => { setMovieData({ ...movieData, poster: e.target.value }) }}
+                id='posterInput'
+                label='Poster URL' />
+                <br />
+            <TextField
+                value={movieData.description}
+                cols={40} minRows={3} maxRows={5}
+                onChange={(e) => { setMovieData({ ...movieData, description: e.target.value }) }}
+                id='descriptionInput'
+                multiline
+                label='Movie Description' />
             {/* dropdown menu for genres */}
-            <select onChange={(e) => {setMovieData({...movieData, genre_id: e.target.value})}} name='Genre' id='genre'>
-                <option value=''>Please select a Genre</option>
-                {genres.map((genre, i) => (
-                    <option  key={i} value={`${genre.id}`}>{genre.name}</option>
-                ))}
-            </select>
-            {props.new ? 
-            (<button type="submit">Add Movie</button>
-            ) : (
-            <button type="submit">Edit Movie</button>)}
+            <div>
+                <List
+                    component="nav"
+                    aria-label="Genre"
+                    sx={{ bgcolor: 'background.paper' }}
+                >
+                    <ListItem
+                        button
+                        id="lock-button"
+                        aria-haspopup="listbox"
+                        aria-controls="lock-menu"
+                        aria-label="Genre"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClickListItem}
+                    >
+                        <ListItemText
+                            primary="Select a Genre"
+                            secondary={options[selectedIndex]}
+                        />
+                    </ListItem>
+                </List>
+                <Menu
+                    id="lock-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'lock-button',
+                        role: 'listbox',
+                    }}
+                >
+                    {options.map((option, index) => (
+                        <MenuItem
+                            key={option}
+                            selected={index === selectedIndex}
+                            onClick={(event) => handleMenuItemClick(event, index)}
+                        >
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Menu>
+            </div>
+            <box display='inline' justifyContent='space-between'>
+            {props.new ?
+                (<Button variant='outlined' color='success' onClick={handleSubmit}>Add Movie</Button>
+                ) : (
+                    <>
+                    <Button variant='outlined' color='success' onClick={handleSubmit}>Edit Movie</Button>
+                    <Button variant='outlined' color='success' onClick={handleDelete}>Remove Movie</Button>
+                    </>)
+                }
             <BackButton text={`Cancel`} />
-        </form>
+            </box>
+        </FormControl>
     )
 }
 
