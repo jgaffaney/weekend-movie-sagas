@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import './MovieList.css'
-import { Container } from '@mui/material';
+import { Container, Button } from '@mui/material';
 
 function MovieList() {
 
@@ -17,7 +17,7 @@ function MovieList() {
 
     return (
         <main>
-            <button onClick={() => {history.push('/addMovie')}}>Add Movie</button>
+            <Button color='success' variant='contained' onClick={() => {history.push('/addMovie')}}>Add Movie</Button>
             <h1>MovieList</h1>
             <Container sx={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }} className="movies">
                 {movies.map(movie => {

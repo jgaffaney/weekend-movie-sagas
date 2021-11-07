@@ -9,7 +9,7 @@ function BackButton({text}) {
     const history = useHistory();
 
     return(
-        <Button onClick={()=>{history.push('/')}}>{text}</Button>
+        <Button variant='outlined' color='success' onClick={()=>{history.push('/')}}>{text}</Button>
     )
 }
 

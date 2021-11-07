@@ -4,6 +4,7 @@ import { useParams, useHistory } from "react-router-dom";
 import BackButton from '../BackButton/BackButton';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
 
 function MovieDetails() {
 
@@ -32,7 +33,7 @@ function MovieDetails() {
             <h3>{movie.description}</h3>
             </div>)
         }
-        <button onClick={()=>{history.push(`/edit/${movie.id}`)}}>EDIT</button>
+        <Button variant='outlined' color='success' onClick={()=>{history.push(`/edit/${movie.id}`)}}>EDIT</Button>
         <BackButton text='Back'/>
             </Card>
         </Container>

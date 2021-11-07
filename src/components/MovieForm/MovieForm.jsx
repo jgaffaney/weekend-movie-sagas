@@ -155,17 +155,17 @@ function MovieForm(props) {
                     ))}
                 </Menu>
             </div>
-            <div display='inline'>
+            <box display='inline' justifyContent='space-between'>
             {props.new ?
-                (<Button onClick={handleSubmit}>Add Movie</Button>
+                (<Button variant='outlined' color='success' onClick={handleSubmit}>Add Movie</Button>
                 ) : (
                     <>
-                    <Button onClick={handleSubmit}>Edit Movie</Button>
-                    <Button onClick={handleDelete}>Remove Movie</Button>
+                    <Button variant='outlined' color='success' onClick={handleSubmit}>Edit Movie</Button>
+                    <Button variant='outlined' color='success' onClick={handleDelete}>Remove Movie</Button>
                     </>)
                 }
             <BackButton text={`Cancel`} />
-            </div>
+            </box>
         </FormControl>
     )
 }
