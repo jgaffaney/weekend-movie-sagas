@@ -21,6 +21,7 @@ function* rootSaga() {
     yield takeEvery('UPDATE_MOVIE', updateMovie)
 }
 
+// generator functions
 function* fetchSelectedGenres(action) {
     try {
         const response = yield axios.get(`/api/movie/${action.payload}`)
@@ -50,7 +51,6 @@ function* postMovie(action) {
     }
 }       
     
-
 function* fetchAllMovies() {
     // get all movies from the DB
     try {
@@ -84,10 +84,9 @@ function* fetchGenres() {
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
+// reducers
 // store to hold genres for selected movie
 const selectedGenres = (state = [], action) => {
-    // console.log('action.payload in selectedGenres: ', action.payload);
-
     switch (action.type) {
         case 'SET_SELECTED_GENRES':
             return action.payload
@@ -115,7 +114,6 @@ const genres = (state = [], action) => {
             return state;
     }
 }
-
 
 // Create one store that all components can use
 const storeInstance = createStore(

@@ -7,23 +7,16 @@ function EditDetails() {
 
     const { id } = useParams();
     console.log('id in editDetails: ', id);
-        // // declare hook functions
+        
+    // // declare hook functions
     const dispatch = useDispatch();
-    // const history = useHistory();
 
 
     useEffect(() => {
         dispatch({type: 'FETCH_SELECTED_GENRES', payload: id})
     },[])
 
-
-    // const [newMovieDetails, setNewMovieDetails] = useState({
-    //     title: '',
-    //     poster: '',
-    //     description: '',
-    //     genre_id: 0
-    // })
-
+    // grab DB result for one movie from store
     const movie = useSelector(store => store.selectedGenres)
 
     return ( 

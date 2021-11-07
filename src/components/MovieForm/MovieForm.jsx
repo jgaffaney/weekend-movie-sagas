@@ -1,4 +1,7 @@
-import {useHistory} from 'react-router-dom';
+// a reusable form used to add a movie or edit the same details.  
+// pass in a movie if you want to edit it
+// pass in new = true if adding a new movie
+
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
 import BackButton from '../BackButton/BackButton';
@@ -14,18 +17,18 @@ function MovieForm(props) {
 
     const [movieData, setMovieData] = useState(props.movie)
 
-
+    // grab genres for drop down list
     const genres = useSelector(store=>store.genres)
 
+    // will dispatch a post is props.new = true, will dispatch and update if false
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('new movieData: ', movieData);
-        dispatch({type: 'POST_MOVIE', payload: movieData})
-    }
-
-    const handleClick = (e) => {
-        e.preventDefault();
-        dispatch({type: 'UPDATE_MOVIE', payload: movieData})
+        if (props.new) {
+            dispatch({type: 'POST_MOVIE', payload: movieData})
+        } else {
+            dispatch({type: 'UPDATE_MOVIE', payload: movieData})
+        }
     }
 
     return(
@@ -46,7 +49,7 @@ function MovieForm(props) {
             {props.new ? 
             (<button type="submit">Add Movie</button>
             ) : (
-            <button onClick={handleClick}>Edit Movie</button>)}
+            <button type="submit">Edit Movie</button>)}
             <BackButton text={`Cancel`} />
         </form>
     )
