@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import FormControl from '@mui/material/FormControl';
 import { InputLabel, Input } from '@mui/material';
+import BackButton from '../BackButton/BackButton';
 
 
 
@@ -59,7 +60,7 @@ function AddMovie() {
                 ))}
             </select>
             <button type="submit">Add Movie</button>
-            <button onClick={()=> {history.push('/')}}>Cancel</button>
+            <BackButton text='Cancel' />
         </form>
         </>
     )

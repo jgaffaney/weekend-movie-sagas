@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from "react-router-dom";
+import BackButton from '../BackButton/BackButton';
 
 function MovieDetails() {
 
@@ -34,7 +35,7 @@ function MovieDetails() {
             <h3>{movie.description}</h3>
             </div>)
         }
-        <button onClick={handleClick} >BACK</button>
+        <BackButton text='Back'/>
         </div>
     )
 }
