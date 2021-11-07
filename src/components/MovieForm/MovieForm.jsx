@@ -14,6 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { FormControl, TextField } from '@mui/material';
+import axios from 'axios';
 
 function MovieForm(props) {
 
@@ -62,11 +63,21 @@ function MovieForm(props) {
         e.preventDefault();
         console.log('new movieData: ', movieData);
         if (props.new) {
-            dispatch({ type: 'POST_MOVIE', payload: movieData })
-            history.push('/')
+            axios.post('/api/movie', movieData)
+                .then(response => {
+                    dispatch({type: 'FETCH_MOVIES'})
+                    history.push('/')
+                }).catch(err => {
+                    log('Error on new movie POST: ', err)
+                })
         } else {
-            dispatch({ type: 'UPDATE_MOVIE', payload: movieData })
-            history.push('/')
+            axios.put('/api/movie', movieData )
+                .then(response => {
+                    dispatch({type: 'FETCH_MOVIES'})
+                    history.push('/')
+                }).catch(err => {
+                    console.log('Error on movie update: ', err);
+                })
         }
     }
 
