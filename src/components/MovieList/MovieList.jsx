@@ -13,11 +13,6 @@ function MovieList() {
         dispatch({ type: 'FETCH_MOVIES' });
     }, []);
 
-    const handleClick = (movie) => {
-        dispatch({type: 'FETCH_SELECTED_GENRES', payload: movie.id})
-        history.push(`/details/${movie.id}`)
-    }
-
     return (
         <main>
             <button onClick={() => {history.push('/addMovie')}}>Add Movie</button>
@@ -27,7 +22,7 @@ function MovieList() {
                     return (
                         <div key={movie.id} >
                             <h3>{movie.title}</h3>
-                            <img onClick={() => handleClick(movie)} src={movie.poster} alt={movie.title}/>
+                            <img onClick={() => history.push(`/details/${movie.id}`)} src={movie.poster} alt={movie.title}/>
                         </div>
                     );
                 })}

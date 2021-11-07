@@ -17,6 +17,7 @@ function* rootSaga() {
     yield takeEvery('FETCH_DETAILS', fetchDetails)
     yield takeEvery('FETCH_SELECTED_GENRES', fetchSelectedGenres)
     yield takeEvery('FETCH_GENRES', fetchGenres)
+    yield takeEvery('POST_DETAILS', postDetails)
 }
 
 function* fetchSelectedGenres(action) {
@@ -28,6 +29,27 @@ function* fetchSelectedGenres(action) {
     }
 }
 
+function* postDetails() {
+    for(let movie of movies) {
+        if(action.payload.title == movie.title) {
+        try {
+                yield axios.put('/api/movie', action.payload)
+                yield put({type: 'FETCH_MOVIES'})
+                history.push('/');
+            } catch (err) {
+                console.log('Error on update: ', err);
+            }
+        } else {
+            try {
+                yield axios.post('/api/movie', action.payload)
+                yield put({type: 'FETCH_MOVIES'})
+                history.push('/')
+            } catch (err) {
+                console.log('Error on movie post: ', err);                
+            }
+        }
+    }
+}
 
 function* fetchAllMovies() {
     // get all movies from the DB
@@ -93,6 +115,7 @@ const genres = (state = [], action) => {
             return state;
     }
 }
+
 
 // Create one store that all components can use
 const storeInstance = createStore(

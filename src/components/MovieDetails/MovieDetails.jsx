@@ -14,10 +14,6 @@ function MovieDetails() {
     // grab the movie with all it's details and an array of genres for the selected movie
     const movie = useSelector(store => store.selectedGenres)
 
-    const handleClick = () => {
-        history.push('/');
-    }
-
     useEffect(() => {
         dispatch({type: 'FETCH_SELECTED_GENRES', payload: id})
     },[])
