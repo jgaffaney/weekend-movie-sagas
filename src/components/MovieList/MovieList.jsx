@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import Card from '@mui/material/Card';
 import './MovieList.css'
+import { Container } from '@mui/material';
 
 function MovieList() {
 
@@ -17,16 +19,16 @@ function MovieList() {
         <main>
             <button onClick={() => {history.push('/addMovie')}}>Add Movie</button>
             <h1>MovieList</h1>
-            <section className="movies">
+            <Container sx={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }} className="movies">
                 {movies.map(movie => {
                     return (
-                        <div key={movie.id} >
+                        <Card sx={{mx: '1%', backgroundColor: '##363333' }}key={movie.id} >
                             <h3>{movie.title}</h3>
                             <img onClick={() => history.push(`/details/${movie.id}`)} src={movie.poster} alt={movie.title}/>
-                        </div>
+                        </Card>
                     );
                 })}
-            </section>
+            </Container>
         </main>
 
     );

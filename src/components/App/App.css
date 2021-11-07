@@ -1,5 +1,14 @@
+body {
+  background-image: url(movie-theatre-screen-red-seats.jpg);
+  background-size: cover;
+
+}
+
 .App {
   text-align: center;
+  /* background-image: url('theaterBackground.jpeg');
+  background-repeat: no-repeat; */
+  background-size: 100% 100%;
 }
 
 

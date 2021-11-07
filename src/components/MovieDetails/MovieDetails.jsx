@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from "react-router-dom";
 import BackButton from '../BackButton/BackButton';
+import Container from '@mui/material/Container';
+import Card from '@mui/material/Card';
 
 function MovieDetails() {
 
@@ -19,7 +21,8 @@ function MovieDetails() {
     },[])
     
     return (
-        <div>
+        <Container>
+            <Card sx={{width: '50%', m: 'auto'}}>
             {(movie.title) &&
             (<div>
             <h2>{movie.title}</h2>
@@ -31,7 +34,8 @@ function MovieDetails() {
         }
         <button onClick={()=>{history.push(`/edit/${movie.id}`)}}>EDIT</button>
         <BackButton text='Back'/>
-        </div>
+            </Card>
+        </Container>
     )
 }
 
