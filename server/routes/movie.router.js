@@ -72,4 +72,28 @@ router.post('/', (req, res) => {
     })
 })
 
+router.put('/', (req, res) => {
+  const movie = req.body
+  const updateMovieQuery = `
+  UPDATE "movies"
+  SET "title" = $1,
+      "poster" = $2,
+      "description" = $3
+  WHERE "id" = $7;
+  DELETE FROM "movies_genres"
+  WHERE "movie_id" = $4;
+  INSERT INTO "movies_genres" ("movie_id", "genre_id")
+  VALUES ($5, $6);
+  `
+  const values = [movie.title, movie.poster, movie.description, movie.id, movie.id, movie.genre_id, movie.id]
+  pool.query(updateMovieQuery, values)
+    .then(response => {
+      console.log('Successful update: ', response);
+      res.sendStatus(200)
+    }).catch(err => {
+      console.log('Error on update: ', err);
+      res.sendStatus(500)
+    })
+})
+
 module.exports = router;
