@@ -22,7 +22,7 @@ function MovieList() {
             <Container sx={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }} className="movies">
                 {movies.map(movie => {
                     return (
-                        <Card style={{backgroundColor: '#cccccc'}} sx={{mx: '1%', maxWidth: '250px'}}key={movie.id} >
+                        <Card style={{backgroundColor: '#cccccc'}} sx={{mx: '1%', width: '200px', padding: '5px', marginTop: '1%'}}key={movie.id} >
                             <Typography variant='h6'>{movie.title}</Typography>
                             <img onClick={() => history.push(`/details/${movie.id}`)} src={movie.poster} alt={movie.title}/>
                         </Card>
