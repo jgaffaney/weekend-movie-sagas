@@ -42,13 +42,9 @@ Everything is included in the project.  One would need to first create a DB and 
 The project includes and home page with the list of movies loaded in the DB.  There is an "Add Movie" page, a "Details" page, and an "Edit Details" that one can use to alter any of the information already stored
 
 
-## License
-
-<a href="https://choosealicense.com/licenses/mit/"><img src="https://raw.githubusercontent.com/johnturner4004/readme-generator/master/src/components/assets/images/mit.svg" height=40 />MIT License</a>
-
 ## Acknowledgements
 
-Who helped you make this project a reality? Friends? Family? Contributors? Instructors?
+Thank you to the Solinas cohort members at PrimeDigital Academy for all their help.  Special thanks to Dane, Kris, and Liz at Prime.
 
 ## Contacts
 
