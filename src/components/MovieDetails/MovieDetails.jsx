@@ -14,11 +14,14 @@ function MovieDetails() {
     // grab the movie with all it's details and an array of genres for the selected movie
     const movie = useSelector(store => store.selectedGenres)
 
+    const handleClick = () => {
+        console.log('clicked');
+    }
+
     useEffect(() => {
         dispatch({type: 'FETCH_SELECTED_GENRES', payload: id})
     },[])
-
-    console.log('movie is: ', movie);
+    
     return (
         <div>
             {(movie.title) &&
@@ -31,6 +34,7 @@ function MovieDetails() {
             <h3>{movie.description}</h3>
             </div>)
         }
+        <button onClick={()=>{history.push(`/edit/${movie.id}`)}}>EDIT</button>
         <BackButton text='Back'/>
         </div>
     )

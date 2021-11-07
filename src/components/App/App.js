@@ -3,6 +3,7 @@ import './App.css';
 import MovieList from '../MovieList/MovieList'
 import MovieDetails from '../MovieDetails/MovieDetails';
 import AddMovie from '../AddMovie/AddMovie';
+import EditDetails from '../BackButton/EditDetails/EditDetails';
 
 function App() {
   return (
@@ -18,8 +19,10 @@ function App() {
        <Route path='/addMovie'>
          <AddMovie />
        </Route>
-
-        {/* Add Movie page */}
+      <Route path='/edit/:id'>
+        <EditDetails />
+      </Route>
+      
       </Router>
     </div>
   );

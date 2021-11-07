@@ -20,11 +20,11 @@ router.get('/:id', (req, res) => {
   const values = req.params.id;  
   
   const queryText = `
-  SELECT "title",  "poster", "description", ARRAY_AGG("genres"."name") AS "genres" from "movies"
+  SELECT "movies"."id", "title",  "poster", "description", ARRAY_AGG("genres"."name") AS "genres" from "movies"
   JOIN "movies_genres" AS "MG" ON "MG"."movie_id" = "movies"."id"
   JOIN "genres" ON "genres"."id" = "MG"."genre_id"
   WHERE "movies"."id" = $1
-  GROUP BY "movies"."title", "movies"."poster", "movies"."description";
+  GROUP BY "movies"."id", "movies"."title", "movies"."poster", "movies"."description";
   `
   pool.query(queryText, [values])
     .then(response => {
@@ -79,17 +79,38 @@ router.put('/', (req, res) => {
   SET "title" = $1,
       "poster" = $2,
       "description" = $3
-  WHERE "id" = $7;
-  DELETE FROM "movies_genres"
-  WHERE "movie_id" = $4;
-  INSERT INTO "movies_genres" ("movie_id", "genre_id")
-  VALUES ($5, $6);
+  WHERE "id" = $4;
+  
   `
-  const values = [movie.title, movie.poster, movie.description, movie.id, movie.id, movie.genre_id, movie.id]
+  const values = [movie.title, movie.poster, movie.description, movie.id]
   pool.query(updateMovieQuery, values)
     .then(response => {
       console.log('Successful update: ', response);
-      res.sendStatus(200)
+      const deleteMovieGenrePairs = `
+      DELETE FROM "movies_genres"
+      WHERE "movie_id" = $1;
+      `
+      const values2 = [movie.id]
+      pool.query(deleteMovieGenrePairs, values2)
+        .then(resp => {
+          console.log('successful genrepair delete: ', resp);
+          const genrePairQuery = `
+          INSERT INTO "movies_genres" ("movie_id", "genre_id")
+          VALUES ($1, $2);
+          `
+          const values3 = [movie.id, movie.genre_id]
+          pool.query(genrePairQuery, values3)
+            .then(respo => {
+              console.log('successful genrePair update: ', respo);
+              res.sendStatus(200)
+            }).catch(err => {
+              console.log('Error adding genre to movie: ', err);
+              res.sendStatus(500)              
+            })
+        }).catch(err => {
+          console.log('Error on deleting movie genres: ', err)
+          res.sendStatus(500)
+        })
     }).catch(err => {
       console.log('Error on update: ', err);
       res.sendStatus(500)
