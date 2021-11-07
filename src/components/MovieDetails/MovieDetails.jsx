@@ -22,8 +22,8 @@ function MovieDetails() {
     },[])
     
     return (
-        <Container>
-            <Card sx={{width: '50%', m: 'auto'}}>
+        <Container >
+            <Card style={{backgroundColor: '#cccccc'}} sx={{width: '50%', m: 'auto'}}>
             {(movie.title) &&
             (<div>
             <h2>{movie.title}</h2>
