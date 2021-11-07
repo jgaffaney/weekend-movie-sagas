@@ -13,7 +13,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { FormControl, TextField } from '@mui/material';
+import { FormControl, TextField, Button } from '@mui/material';
 import axios from 'axios';
 
 function MovieForm(props) {
@@ -44,6 +44,16 @@ function MovieForm(props) {
         setAnchorEl(null);
     };
 
+    const handleDelete = () => {
+        axios.delete(`/api/movie/${props.movie.id}`)
+            .then(res => {
+                console.log('Successful Delete: ', res);
+                alert('Your movie was removed from the database')
+                history.push('/')
+            }).catch(err => {
+                console.log('Error on Delete');
+            })
+    }
 
     // grab genres for drop down list
     const genres = useSelector(store => store.genres)
@@ -82,20 +92,19 @@ function MovieForm(props) {
     }
 
     return (
-        <FormControl onSubmit={handleSubmit}>
-            {/* <label htmlFor='titleInput'>Movie Title</label> */}
+        <FormControl onSubmit={handleSubmit} sx={{width: '50%'}}>
             <TextField
                 value={movieData.title}
                 onChange={(e) => { setMovieData({ ...movieData, title: e.target.value }) }}
                 id='titleInput'
                 label='Movie Title' />
-            {/* <label htmlFor='posterInput'>Poster URL</label> */}
+                <br />
             <TextField
                 value={movieData.poster}
                 onChange={(e) => { setMovieData({ ...movieData, poster: e.target.value }) }}
                 id='posterInput'
                 label='Poster URL' />
-            {/* <label htmlFor='descriptionInput'>Description/Synopsis</label> */}
+                <br />
             <TextField
                 value={movieData.description}
                 cols={40} minRows={3} maxRows={5}
@@ -145,40 +154,18 @@ function MovieForm(props) {
                         </MenuItem>
                     ))}
                 </Menu>
-                {/* <Button
-                    id='dropdownBTN'
-                    aria-controls='basic-menu'
-                    aria-haspopup='true'
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
-                >Select a Genre
-                </Button>
-                <Menu
-                    id="genreMenu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                    }}
-                >
-                    {genres.map((genre, i) => (
-                        <MenuItem key={i} value={`${genre.id}`} 
-                        // onClose={handleClose}
-                        onClick={(e) => {handleClose(e)}}
-                        >{genre.name}</MenuItem>
-                    ))}
-                </Menu> */}
             </div>
-            {/* <select onChange={(e) => {setMovieData({...movieData, genre_id: e.target.value})}} name='Genre' id='genre'>
-                <option value=''>Please select a Genre</option>
-                
-            </select> */}
+            <div display='inline'>
             {props.new ?
-                (<button onClick={handleSubmit}>Add Movie</button>
+                (<Button onClick={handleSubmit}>Add Movie</Button>
                 ) : (
-                    <button onClick={handleSubmit}>Edit Movie</button>)}
+                    <>
+                    <Button onClick={handleSubmit}>Edit Movie</Button>
+                    <Button onClick={handleDelete}>Remove Movie</Button>
+                    </>)
+                }
             <BackButton text={`Cancel`} />
+            </div>
         </FormControl>
     )
 }
